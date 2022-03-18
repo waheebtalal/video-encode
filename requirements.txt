@@ -1,4 +1,4 @@
-aiohttp==3.8.1
+aiohttp
 aiosignal==1.2.0
 ansicon==1.89.0
 async-timeout==4.0.2
@@ -25,7 +25,7 @@ jinxed==1.1.0
 lxml==4.7.1
 multidict==6.0.2
 
-Pyrogram==1.4.7
+Pyrogram
 requests-toolbelt==0.9.1
 requests==2.27.1
 rsa==4.8
@@ -33,9 +33,9 @@ setuptools==60.6.0
 shellingham==1.4.0
 six==1.16.0
 Telethon==1.24.0
-TgCrypto==1.2.3
+TgCrypto
 
 
 
-wheel==0.37.1
-yarl==1.7.2
+wheel
+yarl
