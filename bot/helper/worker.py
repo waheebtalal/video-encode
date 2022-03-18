@@ -41,7 +41,14 @@ async def enc(ls:[]):
         print("enc")
         video_file = await file.download(file_name=str(file.chat.id)+"-"+str(file.message_id), progress=FProgress, progress_args=(msg.chat.id, msg.message_id))
         print(video_file)
-        await msg.edit(text="Encoding")
+        try:
+            await msg.edit(text="Encoding")
+        except:
+            try:
+                await msg.reply_text(text="Encoding")
+            except:
+                print("error reply encoding")
+            print("error edit encoding")
         ttl=get_duration(video_file)
         print("ttl  :"+str(ttl))
         width_high=get_width_height(video_file)
@@ -59,7 +66,14 @@ async def enc(ls:[]):
                              ,thumb=thumb
                             ,supports_streaming=True
                             )
-        await msg.edit(text="Done!")
+        try:
+            await msg.edit(text="Done!")
+        except:
+            try:
+                await msg.reply_text(text="Done!")
+            except:
+                print("error reply done")
+            print("error edit done")
         os.remove(video_file)
         os.remove(outfile)
         os.remove(thumb)
