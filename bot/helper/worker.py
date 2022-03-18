@@ -34,7 +34,7 @@ async def enc(ls:[]):
     print("enc")
     video_file = await file.download(file_name=str(file.chat.id)+"-"+str(file.message_id), progress=FProgress, progress_args=(msg.chat.id, msg.message_id))
     print(video_file)
-    await msg.edit(text="Downloaded")
+    await msg.edit(text="Encoding")
     outfile = await encode(video_file)
     await app.send_video(msg.chat.id, outfile, progress=UProgress, progress_args=(msg.chat.id, msg.message_id))
     await msg.edit(text="Done!")
