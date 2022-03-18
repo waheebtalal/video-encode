@@ -20,12 +20,12 @@ async def hello(client, message :Message):
 @app.on_message(filters.command(['pop']))
 async def h(client, message:Message):
     pop()
-    message.reply_text("pop done!")
+    await message.reply_text("pop done!")
 
 @app.on_message(filters.command(['empty']))
 async def h(client, message:Message):
     empty()
-    message.reply_text("empty done!")
+    await message.reply_text("empty done!")
 
 
 app.run()
