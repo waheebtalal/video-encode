@@ -1,3 +1,5 @@
+from future.backports.email.quoprimime import quote
+
 from bot.helper.worker import *
 from pyrogram import Client ,filters
 
@@ -14,5 +16,16 @@ async def hello(client, message :Message):
 @app.on_message(filters.private&filters.incoming)
 async def hello(client, message :Message):
     msg=await message.reply_text("Hi")
+
+@app.on_message(filters.command(['pop']))
+async def h(client, message:Message):
+    pop()
+    message.reply_text("pop done!")
+
+@app.on_message(filters.command(['empty']))
+async def h(client, message:Message):
+    empty()
+    message.reply_text("empty done!")
+
 
 app.run()
