@@ -10,15 +10,21 @@ q = []
 async def FProgress(current, total, chatid, messageid):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
-    await app.edit_message_text(chat_id=chatid, message_id=messageid, text="downloading \n" + (
+    try:
+        await app.edit_message_text(chat_id=chatid, message_id=messageid, text="downloading \n" + (
             "[%-20s] %d%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
+    except:
+        print("error download progress")
 
 
 async def UProgress(current, total, chatid, messageid):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
-    await app.edit_message_text(chat_id=chatid, message_id=messageid, text="uploading \n" + (
+    try:
+        await app.edit_message_text(chat_id=chatid, message_id=messageid, text="uploading \n" + (
             "[%-20s] %d%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
+    except:
+        print("error upload progress")
 
 
 async def add_queue(msg:[]):
