@@ -13,9 +13,6 @@ async def hello(client, message :Message):
     await add_queue([msg,message])
 
 
-@app.on_message(filters.private&filters.incoming)
-async def hello(client, message :Message):
-    msg=await message.reply_text("Hi")
 
 @app.on_message(filters.command(['pop']))
 async def h(client, message:Message):
@@ -27,5 +24,8 @@ async def h(client, message:Message):
     empty()
     await message.reply_text("empty done!")
 
+@app.on_message(filters.private&filters.incoming)
+async def hello(client, message :Message):
+    msg=await message.reply_text("Hi")
 
 app.run()
