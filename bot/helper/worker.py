@@ -1,6 +1,6 @@
 from _testcapi import awaitType
 
-from bot.helper.ffmpeg_utils import encode
+from bot.helper.ffmpeg_utils import *
 from pyrogram.types import Message
 from bot.helper import *
 
@@ -35,9 +35,27 @@ async def enc(ls:[]):
     video_file = await file.download(file_name=str(file.chat.id)+"-"+str(file.message_id), progress=FProgress, progress_args=(msg.chat.id, msg.message_id))
     print(video_file)
     await msg.edit(text="Encoding")
-    outfile = await encode(video_file)
-    await app.send_video(msg.chat.id, outfile, progress=UProgress, progress_args=(msg.chat.id, msg.message_id))
+    ttl=get_duration(video_file)
+    print("ttl  :"+str(ttl))
+    width_high=get_width_height(video_file)
+    print("width_high :"+str(width_high))
+    thumb=get_thumbnail(video_file,"thumbs//"+str(file.chat.id),1)
+    print("thumb :"+str(thumb))
+    outfile = await encode(video_file,file.chat.id)
+    print("outfile :"+str(outfile))
+    await app.send_video(msg.chat.id, outfile,
+                         progress=UProgress,
+                         progress_args=(msg.chat.id, msg.message_id)
+                         ,duration=ttl
+                         ,width=width_high[0]
+                         ,height=width_high[1]
+                         ,thumb=thumb
+                         ,supports_streaming=True
+                         )
     await msg.edit(text="Done!")
+    os.remove(video_file)
+    os.remove(outfile)
+    os.remove(thumb)
     q.pop(0)
     if len(q) > 0:
         await enc(q[0])

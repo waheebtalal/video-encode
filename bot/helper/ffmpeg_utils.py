@@ -16,13 +16,17 @@ def get_codec(filepath, channel='v:0'):
                             'default=nokey=1:noprint_wrappers=1', filepath])
     return output.decode('utf-8').split()
 
-async def encode(filepath):
+async def encode(filepath,chatid):
+    enpa="encode\\"+str(chatid)
+    os.makedirs(enpa,exist_ok=True)
     basefilepath, extension = os.path.splitext(filepath)
-    output_filepath = basefilepath + '.HEVC' + '.mp4'
+    print("basefilepath : "+basefilepath+" | extension : "+extension)
+    output_filepath =  basefilepath + '.HEVC' + '.mp4'
+    output_filepath=str(output_filepath).replace("downloads",enpa)
     assert(output_filepath != filepath)
     if os.path.isfile(output_filepath):
         print('Skipping "{}": file already exists'.format(output_filepath))
-        return None
+        return output_filepath
     print(filepath)
     # Get the video channel codec
     video_codec = get_codec(filepath, channel='v:0')
@@ -55,7 +59,7 @@ async def encode(filepath):
     call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
     #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
 
-    os.remove(filepath)
+    #os.remove(filepath)
     return output_filepath
 
 
@@ -64,12 +68,13 @@ async def encode(filepath):
 
 
 def get_thumbnail(in_filename, path, ttl):
-    out_filename = os.path.join(path, str(time.time()) + ".jpg")
+    out_filename = os.path.join(path, in_filename + ".jpg")
+    os.makedirs(path,exist_ok=True)
     open(out_filename, 'a').close()
     try:
         (
             ffmpeg
-            .input(in_filename, ss=ttl)
+            .input(in_filename,ss=ttl)
             .output(out_filename, vframes=1)
             .overwrite_output()
             .run(capture_stdout=True, capture_stderr=True)
@@ -91,3 +96,4 @@ def get_width_height(filepath):
       return metadata.get("width"), metadata.get("height")
     else:
       return 1280, 720
+
