@@ -3,6 +3,7 @@ from _testcapi import awaitType
 from bot.helper.ffmpeg_utils import *
 from pyrogram.types import Message
 from bot.helper import *
+from bot.helper.fast import FastDownload
 
 q = []
 
@@ -39,6 +40,7 @@ async def enc(ls:[]):
     file:Message=ls[1]
     try:
         print("enc")
+        video_file=""
         video_file = await file.download(file_name=str(file.chat.id)+"-"+str(file.message_id), progress=FProgress, progress_args=(msg.chat.id, msg.message_id))
         print(video_file)
         try:

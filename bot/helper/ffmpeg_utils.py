@@ -9,12 +9,29 @@ import ffmpeg
 from subprocess import call, check_output
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+import asyncio
 
 def get_codec(filepath, channel='v:0'):
     output = check_output(['ffprobe', '-v', 'error', '-select_streams', channel,
                             '-show_entries', 'stream=codec_name,codec_tag_string', '-of', 
                             'default=nokey=1:noprint_wrappers=1', filepath])
     return output.decode('utf-8').split()
+
+async def run(cmd: str):
+    proc = await asyncio.create_subprocess_shell(
+        cmd,
+        stderr=asyncio.subprocess.PIPE,
+        stdout=asyncio.subprocess.PIPE
+    )
+
+    stdout, stderr = await proc.communicate()
+
+    print(f'[{cmd!r} exited with {proc.returncode}]')
+    if stdout:
+        print(f'[stdout]\n{stdout.decode()}')
+    if stderr:
+        print(f'[stderr]\n{stderr.decode()}')
+
 
 async def encode(filepath,chatid):
     enpa="encode\\"+str(chatid)
@@ -56,10 +73,14 @@ async def encode(filepath,chatid):
 
     subtitle_opts=" -c:s copy -map 0:s? "
     print((['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y']))
-    call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
+    #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
     #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
-
+    cmdl=(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
+    cmd=' '.join(cmdl)
+    print(cmd)
+    await run(cmd)
     #os.remove(filepath)
+    print(output_filepath)
     return output_filepath
 
 
