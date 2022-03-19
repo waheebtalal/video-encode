@@ -34,7 +34,7 @@ async def run(cmd: str):
 
 
 async def encode(filepath,chatid):
-    enpa="encode\\"+str(chatid)
+    enpa="encode//"+str(chatid)
     os.makedirs(enpa,exist_ok=True)
     basefilepath, extension = os.path.splitext(filepath)
     print("basefilepath : "+basefilepath+" | extension : "+extension)
