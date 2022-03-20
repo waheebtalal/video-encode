@@ -73,11 +73,12 @@ async def encode(filepath,chatid):
 
     subtitle_opts=" -c:s copy -map 0:s? "
     print((['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y']))
-    call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
+    #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
     #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
-    #cmdl=(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
-    #cmd=' '.join(cmdl)
-    #print(cmd)
+    cmdl=(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
+    cmd=' '.join(cmdl)
+    print(cmd)
+    run(cmd)
  
         
     os.remove(filepath)
