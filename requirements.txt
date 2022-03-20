@@ -24,7 +24,7 @@ idna==3.3
 jinxed==1.1.0
 lxml==4.7.1
 multidict==6.0.2
-
+python-decouple
 Pyrogram
 requests-toolbelt==0.9.1
 requests==2.27.1
