@@ -33,13 +33,13 @@ async def run(cmd: str):
         print(f'[stderr]\n{stderr.decode()}')
 
 
-async def encode(filepath,chatid):
-    enpa="encode//"+str(chatid)
-    os.makedirs(enpa,exist_ok=True)
-    basefilepath, extension = os.path.splitext(filepath)
-    print("basefilepath : "+basefilepath+" | extension : "+extension)
-    output_filepath =  basefilepath + '.HEVC' + '.mp4'
-    output_filepath=str(output_filepath).replace("downloads",enpa)
+async def encode(filepath,output_filepath):
+    #enpa="encode//"+str(chatid)
+    #os.makedirs(enpa,exist_ok=True)
+    #basefilepath, extension = os.path.splitext(filepath)
+    #print("basefilepath : "+basefilepath+" | extension : "+extension)
+    #output_filepath =  basefilepath + '.HEVC' + '.mp4'
+    #output_filepath=str(output_filepath).replace("downloads",enpa)
     assert(output_filepath != filepath)
     if os.path.isfile(output_filepath):
         print('Skipping "{}": file already exists'.format(output_filepath))
