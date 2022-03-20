@@ -16,6 +16,18 @@ async def FProgress(current, total, chatid, messageid):
             "[%-20s] %d%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
     except:
         print("error download progress")
+        
+async def stats(e): 
+    try: 
+        #wah = e.pattern_match.group(1).decode("UTF-8") 
+        #wh = decode(wah) 
+        out, dl, thum, dtime = wh.split(";") 
+        ot = hbs(int(Path(out).stat().st_size)) 
+        ov = hbs(int(Path(dl).stat().st_size))
+        ans = f"تم التنزيل:\n{ov}\n\nجاري الضغط:\n{ot}"
+        await e.answer(ans, cache_time=0, alert=True)
+    except BaseException: 
+            await e.answer("هناك مشكلة 🤔\nاعد ارسال الفيديو", cache_time=0, alert=True)
 
 
 async def UProgress(current, total, chatid, messageid):
@@ -57,7 +69,13 @@ async def enc(ls:[]):
         print("width_high :"+str(width_high))
         thumb=get_thumbnail(video_file,"thumbs//"+str(file.chat.id),1)
         print("thumb :"+str(thumb))
-        outfile = await encode(video_file,file.chat.id)
+        enpa="encode//"+str(file.chat.id) 
+        os.makedirs(enpa,exist_ok=True) 
+        basefilepath, extension = os.path.splitext(video_file) 
+        print("basefilepath : "+basefilepath+" | extension : "+extension) 
+        output_filepath = basefilepath + '.HEVC' + '.mp4' 
+        output_filepath=str(output_filepath).replace("downloads",enpa)
+        outfile = await encode(video_file,output_filepath)
         print("outfile :"+str(outfile))
         await app.send_video(msg.chat.id, outfile,
                              progress=UProgress,
