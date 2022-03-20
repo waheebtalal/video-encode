@@ -4,10 +4,10 @@ from decouple import config
 api=19663899
 hash="af0b19d19293e57b1b74cabcf6dcbbd6"
 bot="5272600822:AAEPxO-u2yva7aXhz-ZdTup_DZrkwOZiVAE"
-try: 
-    api=config("APP_ID", cast=int) 
-    hash=config("API_HASH") 
-    bot=config("BOT_TOKEN")
+try:
+ api=config("api", cast=int)
+ hash=config("hash")
+ bot=config("bot")   
 except:
   print("error config")
 app=Client("bot",api_id=api,api_hash=hash,bot_token=bot)
