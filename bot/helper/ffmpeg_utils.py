@@ -78,7 +78,7 @@ async def encode(filepath,chatid):
     cmdl=(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() +subtitle_opts.split()+ [output_filepath,'-y'])
     cmd=' '.join(cmdl)
     print(cmd)
-    run(cmd)
+    await run(cmd)
  
         
     os.remove(filepath)
