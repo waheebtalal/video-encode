@@ -12,14 +12,14 @@ from os import path
 q = []
 
 
-async def FProgress(current, total, msg: Message):
+async def FProgress(current, total,chatid,mesgid):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
     # proc = "downloading \n" + (
     #        "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
     #  if str(msg.text) != str(proc):
     try:
-        await msg.edit(text="downloading \n" + (
+        await  app.edit_message_text(chat_id=chatid,message_id=mesgid,text="downloading \n" + (
                 "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
     except FloodWait as e:
         print("error download progress")
@@ -36,14 +36,14 @@ async def stats(out):
         return "خطأ !!"
 
 
-async def UProgress(current: int, total, msg: Message):
+async def UProgress(current: int, total, chatid,mesgid):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
     #  progress = "uploading \n" + (
     #    "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
 
     try:
-        await msg.edit(text="uploading \n" + (
+        await app.edit_message_text(chat_id=chatid,message_id=mesgid,text="uploading \n" + (
                 "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
     except FloodWait as e:
         print("error upload progress")
@@ -64,7 +64,7 @@ async def enc(ls: []):
         print("enc")
         video_file = ""
         video_file = await file.download(file_name=str(file.chat.id) + "-" + str(file.message_id), progress=FProgress,
-                                         progress_args=(msg))
+                                         progress_args=(msg.chat.id,msg.message_id))
         print(video_file)
         ttl = get_duration(video_file)
         print("ttl  :" + str(ttl))
@@ -96,7 +96,7 @@ async def enc(ls: []):
         try:
             await app.send_video(msg.chat.id, outfile,
                                  progress=UProgress,
-                                 progress_args=(msg)
+                                 progress_args=(msg.chat.id,msg.message_id)
                                  , duration=ttl
                                  , width=width_high[0]
                                  , height=width_high[1]
