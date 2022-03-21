@@ -31,6 +31,6 @@ async def hello(client, message :Message):
 
 @app.on_callback_query()
 async def _(client,callback:CallbackQuery):
-    await callback.answer(text=str(stats(callback.data)),show_alert=True)
+    await callback.answer(text=str(await stats(callback.data)),show_alert=True)
 
 app.run()
