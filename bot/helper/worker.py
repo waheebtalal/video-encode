@@ -15,9 +15,9 @@ q = []
 async def FProgress(current, total, msg: Message):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
-    proc = "downloading \n" + (
-            "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
-    if str(msg.text) != str(proc):
+    #proc = "downloading \n" + (
+    #        "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
+  #  if str(msg.text) != str(proc):
         try:
             await msg.edit(text="downloading \n" + (
                     "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
@@ -39,9 +39,9 @@ async def stats(out):
 async def UProgress(current: int, total, msg: Message):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
-    progress = "uploading \n" + (
-            "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
-    if str(msg.text) != str(progress):
+  #  progress = "uploading \n" + (
+        #    "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
+    
         try:
             await msg.edit(text="uploading \n" + (
                     "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
@@ -104,6 +104,17 @@ async def enc(ls: []):
                                  , supports_streaming=True
                                  )
         except FloodWait as e:
+                try:
+                    await app.send_video(msg.chat.id, outfile
+                                #, progress=UProgress
+                                #, progress_args=(msg)
+                                 , duration=ttl
+                                 , width=width_high[0]
+                                 , height=width_high[1]
+                                 , thumb=thumb
+                                 , supports_streaming=True)
+                except:
+                      print("error send no progress")
             print("send error")
             await asyncio.sleep(e.x)
 
