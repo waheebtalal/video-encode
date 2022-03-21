@@ -7,6 +7,7 @@ from pyrogram import Client ,filters
 
 
 
+
 @app.on_message(filters.private&filters.incoming&filters.media)
 async def hello(client, message :Message):
     msg= await message.reply_text("Added to queue",quote=True)
@@ -27,5 +28,9 @@ async def h(client, message:Message):
 @app.on_message(filters.private&filters.incoming)
 async def hello(client, message :Message):
     msg=await message.reply_text("Hi")
+
+@app.on_callback_query()
+async def _(client,callback:CallbackQuery):
+    await callback.answer(text=str(stats(callback.data)),show_alert=True)
 
 app.run()
