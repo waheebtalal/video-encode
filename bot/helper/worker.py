@@ -12,48 +12,42 @@ from os import path
 q = []
 
 
-async def FProgress(current, total, chatid, messageid):
+async def FProgress(current, total, msg: Message):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
-    try:
-        await app.edit_message_text(chat_id=chatid, message_id=messageid, text="downloading \n" + (
-                "[%-20s] %d%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
-    except FloodWait as e:
-        print("error download progress")
-        await asyncio.sleep(e.x)
+    proc = "downloading \n" + (
+            "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
+    if msg.text != proc:
+        try:
+            await msg.edit(text="downloading \n" + (
+                    "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
+        except FloodWait as e:
+            print("error download progress")
+            await asyncio.sleep(e.x)
 
 
 async def stats(out):
     try:
-        ot = hbs(int(Path(out).stat().st_size))
-        #   ov = hbs(int(Path(dl).stat().st_size))
-        ans = f"\n\nجاري الضغط:\n{ot}"
+        ot = os.path.getsize(out)
+        oos = ot / (1024 * 1024)
+        ans = "جاري الضغط:" + " \n " + str(oos)
         return ans
-    except BaseException:
-        return ("هناك مشكلة 🤔\nاعد ارسال الفيديو")
+    except:
+        return "خطأ !!"
 
 
-def hbs(size):
-    if not size:
-        return ""
-    power = 2 ** 10
-    raised_to_pow = 0
-    dict_power_n = {0: "B", 1: "K", 2: "M", 3: "G", 4: "T", 5: "P"}
-    while size > power:
-        size /= power
-        raised_to_pow += 1
-    return str(round(size, 2)) + " " + dict_power_n[raised_to_pow] + "B"
-
-
-async def UProgress(current, total, chatid, messageid):
+async def UProgress(current: int, total, msg: Message):
     print(f"{current * 100 / total:.1f}%")
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
-    try:
-        await app.edit_message_text(chat_id=chatid, message_id=messageid, text="uploading \n" + (
-                "[%-20s] %d%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
-    except FloodWait as e:
-        print("error upload progress")
-        await asyncio.sleep(e.x)
+    progress = "uploading \n" + (
+            "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
+    if msg.text != progress:
+        try:
+            await msg.edit(text="uploading \n" + (
+                    "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
+        except FloodWait as e:
+            print("error upload progress")
+            await asyncio.sleep(e.x)
 
 
 async def add_queue(msg: []):
@@ -70,7 +64,7 @@ async def enc(ls: []):
         print("enc")
         video_file = ""
         video_file = await file.download(file_name=str(file.chat.id) + "-" + str(file.message_id), progress=FProgress,
-                                         progress_args=(msg.chat.id, msg.message_id))
+                                         progress_args=(msg))
         print(video_file)
         ttl = get_duration(video_file)
         print("ttl  :" + str(ttl))
@@ -99,15 +93,20 @@ async def enc(ls: []):
                 print("error reply encoding")
             print("error edit encoding")
         outfile = await encode(video_file, output_filepath)
-        await app.send_video(msg.chat.id, outfile,
-                             progress=UProgress,
-                             progress_args=(msg.chat.id, msg.message_id)
-                             , duration=ttl
-                             , width=width_high[0]
-                             , height=width_high[1]
-                             , thumb=thumb
-                             , supports_streaming=True
-                             )
+        try:
+            await app.send_video(msg.chat.id, outfile,
+                                 progress=UProgress,
+                                 progress_args=(msg)
+                                 , duration=ttl
+                                 , width=width_high[0]
+                                 , height=width_high[1]
+                                 , thumb=thumb
+                                 , supports_streaming=True
+                                 )
+        except FloodWait as e:
+            print("send error")
+            await asyncio.sleep(e.x)
+
         try:
             await msg.edit(text="Done!")
         except FloodWait as e:
@@ -125,14 +124,14 @@ async def enc(ls: []):
         print("except")
         await file.reply_text("Error")
 
-    q.pop(0)
+    pop()
     if len(q) > 0:
         await enc(q[0])
 
 
 def pop():
-    if len(q)!=0:
-     q.pop(0)
+    if len(q) != 0:
+        q.pop(0)
 
 
 def empty():
