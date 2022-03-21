@@ -17,7 +17,7 @@ async def FProgress(current, total, msg: Message):
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
     proc = "downloading \n" + (
             "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
-    if msg.text != proc:
+    if str(msg.text) != str(proc):
         try:
             await msg.edit(text="downloading \n" + (
                     "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
@@ -41,7 +41,7 @@ async def UProgress(current: int, total, msg: Message):
     #  print("\r[%-20s] %d%%" % ('=' * int(current * 10 / total),int(current * 100 / total)), end='')
     progress = "uploading \n" + (
             "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
-    if msg.text != progress:
+    if str(msg.text) != str(progress):
         try:
             await msg.edit(text="uploading \n" + (
                     "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
