@@ -1,3 +1,4 @@
+import zipapp
 from _testcapi import awaitType
 from pathlib import Path
 
@@ -6,8 +7,6 @@ from pyrogram.types import Message, CallbackQuery, ReplyKeyboardMarkup, InlineKe
 from bot.helper import *
 import asyncio
 from pyrogram.errors import FloodWait
-from bot.helper.fast import FastDownload
-from os import path
 
 q = []
 
@@ -26,14 +25,15 @@ async def FProgress(current, total, chatid, mesgid):
         await asyncio.sleep(e.x)
 
 
-async def stats(out:str):
+async def stats(out: str):
     try:
-        ot = os.path.getsize("encode/"+out.split("-")[0]+"/"+out+ '.HEVC' + '.mp4')
+        ot = os.path.getsize("encode/" + out.split("-")[0] + "/" + out + '.HEVC' + '.mp4')
         oos = hbs(ot)
         ans = "جاري الضغط:" + " \n " + str(oos)
         return ans
     except:
         return "خطأ !!"
+
 
 def hbs(size):
     if not size:
@@ -45,6 +45,7 @@ def hbs(size):
         size /= power
         raised_to_pow += 1
     return str(round(size, 2)) + " " + dict_power_n[raised_to_pow] + "B"
+
 
 async def UProgress(current: int, total, chatid, mesgid):
     print(f"{current * 100 / total:.1f}%")
@@ -62,16 +63,22 @@ async def UProgress(current: int, total, chatid, mesgid):
 
 async def add_queue(msg: []):
     print("add_queue")
-    q.append(msg)
+    if len(q) != 0 & msg[0] == owner:
+        q.insert(1, msg)
+    else:
+        q.append(msg)
+    print(msg)
     if len(q) == 1:
         await  enc(msg)
 
 
 async def enc(ls: []):
-    msg: Message = ls[0]
-    file: Message = ls[1]
+    chatid = ls[0]
+    msg_file = ls[1]
+    msg_rep = ls[2]
+    msg: Message = await app.get_messages(chatid, message_ids=msg_rep)
+    file: Message = await app.get_messages(chatid, message_ids=msg_file)
 
-    print("enc")
     video_file = ""
     try:
         video_file = await file.download(file_name=str(file.chat.id) + "-" + str(file.message_id), progress=FProgress,
@@ -90,7 +97,6 @@ async def enc(ls: []):
         print("basefilepath : " + basefilepath + " | extension : " + extension)
         output_filepath = basefilepath + '.HEVC' + '.mp4'
         output_filepath = str(output_filepath).replace("downloads", enpa)
-        print("hihi")
         await msg.edit(text="Encoding", reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton(text="state", callback_data=str(file.chat.id) + "-" + str(file.message_id))]]))
 
@@ -137,9 +143,14 @@ async def enc(ls: []):
         os.remove(video_file)
         os.remove(outfile)
         os.remove(thumb)
+        try:
+            await file.delete(True)
+        except FloodWait as e:
+            print(e.MESSAGE)
+            await asyncio.sleep(e.x)
 
-    except:
-        print(32)
+    except Exception as en:
+        print(str(en))
     pop()
     if len(q) > 0:
         await enc(q[0])
@@ -152,3 +163,20 @@ def pop():
 
 def empty():
     q = []
+
+
+def appen(nu, owner):
+    if q.__contains__(nu):
+        return "موجود بالفعل"
+    else:
+        if owner & len(q) != 0:
+            q.insert(1, nu)
+        else:
+            q.append(nu)
+
+
+def inde(msg):
+    if q.__contains__(msg):
+        return q.index(msg)
+    else:
+        return None
