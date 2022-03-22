@@ -42,8 +42,7 @@ async def h(client, message: Message):
 
 @app.on_message(filters.private&filters.incoming)
 async def hello(client, message :Message):
-    msg=await message.reply_text("Hi",reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="state", callback_data="hi")]]),quote=True)
+    msg=await message.reply_text("بوت ضغط الفيديو \n  فقط ارسل الفيديو",quote=True)
 
 @app.on_callback_query()
 async def _(client,callback:CallbackQuery):
