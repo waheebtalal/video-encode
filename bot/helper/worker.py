@@ -180,3 +180,10 @@ def inde(msg):
         return q.index(msg)
     else:
         return None
+
+def find(m):
+    for a in q:
+        if a[0] == m:
+            return a
+
+    return False

@@ -6,10 +6,21 @@ from pyrogram import Client ,filters
 
 @app.on_message(filters.private&filters.incoming&filters.media)
 async def hello(client, message :Message):
-    msg= await message.reply_text("Added to queue",quote=True,reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="queue", callback_data="q:"+str(message.message_id))]]))
-    await add_queue([message.chat.id,message.message_id,msg.message_id])
-    print("add queue:",[message.chat.id,message.message_id,msg.message_id])
+    ch=find(message.chat.id)
+    if(ch):
+        if(message.chat.id==owner):
+            msg = await message.reply_text("Added to queue", quote=True, reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="queue", callback_data="q:" + str(message.message_id))]]))
+            await add_queue([message.chat.id,message.message_id,msg.message_id])
+        else:
+           await app.send_message(chat_id=ch[0],text="لديك عملية بالانتظار",reply_to_message_id=ch[1])
+
+    else:
+        msg = await message.reply_text("Added to queue", quote=True, reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton(text="queue", callback_data="q:" + str(message.message_id))]]))
+        await add_queue([message.chat.id, message.message_id, msg.message_id])
+
+
 
 
 
