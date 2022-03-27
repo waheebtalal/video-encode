@@ -9,15 +9,15 @@ async def hello(client, message :Message):
     ch=find(message.chat.id)
     if(ch):
         if(message.chat.id==owner):
-            msg = await message.reply_text("Added to queue", quote=True, reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="queue", callback_data="q:" + str(message.message_id))]]))
+            msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.message_id))]]))
             await add_queue([message.chat.id,message.message_id,msg.message_id])
         else:
            await app.send_message(chat_id=ch[0],text="لديك عملية بالانتظار",reply_to_message_id=ch[1])
 
     else:
-        msg = await message.reply_text("Added to queue", quote=True, reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="queue", callback_data="q:" + str(message.message_id))]]))
+        msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.message_id))]]))
         await add_queue([message.chat.id, message.message_id, msg.message_id])
 
 
@@ -48,7 +48,7 @@ async def hello(client, message :Message):
 async def _(client,callback:CallbackQuery):
     if callback.data.split(":")[0]=="q":
         print("callback :",[callback.message.chat.id, callback.message.reply_to_message.message_id,callback.message.message_id])
-        await callback.answer(text=str(inde([callback.message.chat.id, callback.message.reply_to_message.message_id,callback.message.message_id])))
+        await callback.answer(text=str(inde([callback.message.chat.id, callback.message.reply_to_message.message_id,callback.message.message_id])),show_alert=True)
     else:
 
      await callback.answer(text=str(await stats(callback.data)),show_alert=True)

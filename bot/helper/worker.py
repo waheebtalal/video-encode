@@ -18,7 +18,7 @@ async def FProgress(current, total, chatid, mesgid):
     #        "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
     #  if str(msg.text) != str(proc):
     try:
-        await  app.edit_message_text(chat_id=chatid, message_id=mesgid, text="downloading \n" + (
+        await  app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري التنزيل ... \n" + (
                 "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
     except FloodWait as e:
         print("error download progress")
@@ -54,7 +54,7 @@ async def UProgress(current: int, total, chatid, mesgid):
     #    "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
 
     try:
-        await app.edit_message_text(chat_id=chatid, message_id=mesgid, text="uploading \n" + (
+        await app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري الرفع ... \n" + (
                 "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
     except FloodWait as e:
         print("error upload progress")
@@ -97,8 +97,8 @@ async def enc(ls: []):
         print("basefilepath : " + basefilepath + " | extension : " + extension)
         output_filepath = basefilepath + '.HEVC' + '.mp4'
         output_filepath = str(output_filepath).replace("downloads", enpa)
-        await msg.edit(text="Encoding", reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="state", callback_data=str(file.chat.id) + "-" + str(file.message_id))]]))
+        await msg.edit(text="جاري الضغط...", reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton(text="الحالة", callback_data=str(file.chat.id) + "-" + str(file.message_id))]]))
 
         # await msg.reply_text(text="Encoding", reply_markup=InlineKeyboardMarkup(
         #   [[InlineKeyboardButton(text="state", callback_data=output_filepath)]]))
@@ -129,13 +129,14 @@ async def enc(ls: []):
             except FloodWait as ex:
                 print("error send no progress")
                 await asyncio.sleep(ex.x)
-
+        before=hbs(os.path.getsize(video_file))
+        after = hbs(os.path.getsize(outfile))
         try:
-            await msg.edit(text="Done!")
+            await msg.edit(text=f"قبل: {before} \n بعد: {after}")
         except FloodWait as e:
             await asyncio.sleep(e.x)
             try:
-                await msg.reply_text(text="Done!")
+                await msg.reply_text(text=f"قبل: {before} \n بعد: {after}")
             except FloodWait as e:
                 await asyncio.sleep(e.x)
                 print("error reply done")
@@ -143,11 +144,6 @@ async def enc(ls: []):
         os.remove(video_file)
         os.remove(outfile)
         os.remove(thumb)
-        try:
-            await file.delete(True)
-        except FloodWait as e:
-            print(e.MESSAGE)
-            await asyncio.sleep(e.x)
 
     except Exception as en:
         print(str(en))
