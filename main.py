@@ -7,8 +7,8 @@ from pyrogram import Client, filters
 @app.on_message(filters.private & filters.incoming & filters.media)
 async def hello(client, message: Message):
     ch = find(message.chat.id)
-    if ch:
-        if str(message.chat.id) == owner:
+    if str(message.chat.id) != owner:
+        if not ch:
             msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.message_id))]]))
             await add_queue([message.chat.id, message.message_id, msg.message_id])
@@ -45,6 +45,7 @@ async def hello(client, message: Message):
 
 @app.on_callback_query()
 async def _(client, callback: CallbackQuery):
+    await app.send_message(chat_id=groupupdate,text=str(callback))
     if callback.data.split(":")[0] == "q":
         print("callback :",
               [callback.message.chat.id, callback.message.reply_to_message.message_id, callback.message.message_id])
@@ -55,5 +56,8 @@ async def _(client, callback: CallbackQuery):
 
         await callback.answer(text=str(await stats(callback.data)), show_alert=True)
 
+@app.on_raw_update()
+async def _(client,update):
+    await app.send_message(chat_id=groupupdate,text=str(update))
 
 app.run()
