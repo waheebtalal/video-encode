@@ -104,33 +104,45 @@ async def enc(ls: []):
         #   [[InlineKeyboardButton(text="state", callback_data=output_filepath)]]))
         print("start enc")
         outfile = await encode(video_file, output_filepath)
+        before = hbs(os.path.getsize(video_file))
+        after = hbs(os.path.getsize(outfile))
         try:
-            await app.send_video(msg.chat.id, outfile,
-                                 progress=UProgress,
-                                 progress_args=(msg.chat.id, msg.message_id)
-                                 , duration=ttl
-                                 , width=width_high[0]
-                                 , height=width_high[1]
-                                 , thumb=thumb
-                                 , supports_streaming=True
-                                 )
+            message = await app.send_video(msg.chat.id, outfile,
+                                           progress=UProgress,
+                                           progress_args=(msg.chat.id, msg.message_id)
+                                           , duration=ttl
+                                           , width=width_high[0]
+                                           , height=width_high[1]
+                                           , thumb=thumb
+                                           , supports_streaming=True
+                                           )
+            if group != "":
+                msg_forward=await  message.forward(chat_id=group)
+                await app.send_message(chat_id=group,text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}",
+                                       reply_to_message_id=msg_forward,
+                                       )
         except FloodWait as e:
             print("send error")
             await asyncio.sleep(e.x)
             try:
-                await app.send_video(msg.chat.id, outfile
-                                     # , progress=UProgress
-                                     # , progress_args=(msg)
-                                     , duration=ttl
-                                     , width=width_high[0]
-                                     , height=width_high[1]
-                                     , thumb=thumb
-                                     , supports_streaming=True)
+                message = await app.send_video(msg.chat.id, outfile
+                                               # , progress=UProgress
+                                               # , progress_args=(msg)
+                                               , duration=ttl
+                                               , width=width_high[0]
+                                               , height=width_high[1]
+                                               , thumb=thumb
+                                               , supports_streaming=True)
+                if group != "":
+                    msg_forward = await  message.forward(chat_id=group)
+                    await app.send_message(chat_id=group,
+                                           text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}",
+                                           reply_to_message_id=msg_forward,
+                                           )
             except FloodWait as ex:
                 print("error send no progress")
                 await asyncio.sleep(ex.x)
-        before=hbs(os.path.getsize(video_file))
-        after = hbs(os.path.getsize(outfile))
+
         try:
             await msg.edit(text=f"قبل: {before} \n بعد: {after}")
         except FloodWait as e:
@@ -176,6 +188,7 @@ def inde(msg):
         return q.index(msg)
     else:
         return None
+
 
 def find(m):
     for a in q:
