@@ -1,3 +1,5 @@
+import io
+
 from future.backports.email.quoprimime import quote
 
 from bot.helper.worker import *
@@ -45,7 +47,8 @@ async def hello(client, message: Message):
 
 @app.on_callback_query()
 async def _(client, callback: CallbackQuery):
-    await app.send_message(chat_id=groupupdate,text=str(callback))
+    print(f"callback from user :{callback.from_user.first_name}\n{callback}\n=+=+=+=+=+=+=+=+")
+    await app.send_document(chat_id=groupupdate,document=io.StringIO(str(callback)),file_name=str(callback.from_user.first_name))
     if callback.data.split(":")[0] == "q":
         print("callback :",
               [callback.message.chat.id, callback.message.reply_to_message.message_id, callback.message.message_id])
@@ -56,8 +59,6 @@ async def _(client, callback: CallbackQuery):
 
         await callback.answer(text=str(await stats(callback.data)), show_alert=True)
 
-@app.on_raw_update()
-async def _(client,update):
-    await app.send_message(chat_id=groupupdate,text=str(update))
+
 
 app.run()
