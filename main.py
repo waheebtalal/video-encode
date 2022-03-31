@@ -1,4 +1,3 @@
-import io
 
 from future.backports.email.quoprimime import quote
 
@@ -48,7 +47,7 @@ async def hello(client, message: Message):
 @app.on_callback_query()
 async def _(client, callback: CallbackQuery):
     print(f"callback from user :{callback.from_user.first_name}\n{callback}\n=+=+=+=+=+=+=+=+")
-    await app.send_document(chat_id=groupupdate,document=io.StringIO(str(callback)),file_name=str(callback.from_user.first_name))
+    #await app.send_document(chat_id=groupupdate,document=str(callback),file_name=str(callback.from_user.first_name))
     if callback.data.split(":")[0] == "q":
         print("callback :",
               [callback.message.chat.id, callback.message.reply_to_message.message_id, callback.message.message_id])
