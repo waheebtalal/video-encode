@@ -117,10 +117,11 @@ async def enc(ls: []):
                                            , supports_streaming=True
                                            )
             if group != "":
-                msg_forward=await  message.forward(chat_id=group)
-                await app.send_message(chat_id=group,text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}",
-                                       reply_to_message_id=msg_forward,
-                                       )
+                msg_forward = await  message.forward(chat_id=int(group))
+                await msg_forward.reply(text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}"
+                                            ,
+                                        quote=True
+                                        )
         except FloodWait as e:
             print("send error")
             await asyncio.sleep(e.x)
@@ -134,11 +135,11 @@ async def enc(ls: []):
                                                , thumb=thumb
                                                , supports_streaming=True)
                 if group != "":
-                    msg_forward = await  message.forward(chat_id=group)
-                    await app.send_message(chat_id=group,
-                                           text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}",
-                                           reply_to_message_id=msg_forward,
-                                           )
+                    msg_forward = await  message.forward(chat_id=int(group))
+                    await msg_forward.reply(text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}"
+                                                 ,
+                                            quote=True
+                                            )
             except FloodWait as ex:
                 print("error send no progress")
                 await asyncio.sleep(ex.x)
@@ -159,6 +160,7 @@ async def enc(ls: []):
 
     except Exception as en:
         print(str(en))
+
     pop()
     if len(q) > 0:
         await enc(q[0])
