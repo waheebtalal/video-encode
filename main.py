@@ -7,7 +7,7 @@ from pyrogram import Client, filters
 @app.on_message(filters.private & filters.incoming & filters.media)
 async def hello(client, message: Message):
     ch = find(message.chat.id)
-    if block.__contains__(str(message.chat.id)):
+    if not owner.__contains__(str(message.chat.id)):
         return
     msglog = await message.forward(int(group))
     await msglog.reply(text=message.from_user.first_name + "\n" + str(message.from_user.id), quote=True)
@@ -44,11 +44,15 @@ async def h(client, message: Message):
 
 @app.on_message(filters.private & filters.incoming)
 async def hello(client, message: Message):
+    if not owner.__contains__(str(message.chat.id)):
+        return
     msg = await message.reply_text("بوت ضغط الفيديو \n  فقط ارسل الفيديو", quote=True)
 
 
 @app.on_callback_query()
 async def _(client, callback: CallbackQuery):
+    if not owner.__contains__(str(message.chat.id)):
+        return
     print(f"callback from user :{callback.from_user.first_name}\n{callback}\n=+=+=+=+=+=+=+=+")
     # await app.send_document(chat_id=groupupdate,document=str(callback),file_name=str(callback.from_user.first_name))
     if callback.data.split(":")[0] == "q":
