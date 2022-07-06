@@ -2,9 +2,9 @@ from pyrogram import Client, filters
 
 from decouple import config
 
-api = 19663899
-hash = "af0b19d19293e57b1b74cabcf6dcbbd6"
-bot = "5029205621:AAGWw2fkjLpLOT1m2nXVNB-rPoEgJe0Q8T0"
+api = 19
+hash = "af0b19d19"
+bot = "521:AAGT1m2nXVNB-rPoEgJe0Q8T0"
 owner = "675889933"
 group = "-619312469"
 block = "1 2"
