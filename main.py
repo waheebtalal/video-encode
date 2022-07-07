@@ -1,7 +1,4 @@
-from future.backports.email.quoprimime import quote
-
 from bot.helper.worker import *
-from pyrogram import Client, filters
 
 
 @app.on_message(filters.private & filters.incoming & filters.media)
@@ -14,15 +11,15 @@ async def hello(client, message: Message):
     if owner.__contains__(str(message.chat.id)):
         if not ch:
             msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.message_id))]]))
-            await add_queue([message.chat.id, message.message_id, msg.message_id])
+                [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.id))]]))
+            await add_queue([message.chat.id, message.id, msg.id])
         else:
             await app.send_message(chat_id=ch[0], text="لديك عملية بالانتظار", reply_to_message_id=ch[1])
 
     else:
         msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.message_id))]]))
-        await add_queue([message.chat.id, message.message_id, msg.message_id])
+            [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.id))]]))
+        await add_queue([message.chat.id, message.id, msg.id])
 
 
 @app.on_message(filters.command(['pop']))
@@ -39,7 +36,7 @@ async def h(client, message: Message):
 
 @app.on_message(filters.command(['m']))
 async def h(client, message: Message):
-    await message.reply_text(str(message.reply_to_message.message_id))
+    await message.reply_text(str(message.reply_to_message.id))
 
 
 @app.on_message(filters.private & filters.incoming)
@@ -51,15 +48,15 @@ async def hello(client, message: Message):
 
 @app.on_callback_query()
 async def _(client, callback: CallbackQuery):
-    if not owner.__contains__(str(message.chat.id)):
+    if not owner.__contains__(str(callback.from_user.id)):
         return
     print(f"callback from user :{callback.from_user.first_name}\n{callback}\n=+=+=+=+=+=+=+=+")
     # await app.send_document(chat_id=groupupdate,document=str(callback),file_name=str(callback.from_user.first_name))
     if callback.data.split(":")[0] == "q":
         print("callback :",
-              [callback.message.chat.id, callback.message.reply_to_message.message_id, callback.message.message_id])
+              [callback.message.chat.id, callback.message.reply_to_message.id, callback.message.id])
         await callback.answer(text=str(inde(
-            [callback.message.chat.id, callback.message.reply_to_message.message_id, callback.message.message_id])),
+            [callback.message.chat.id, callback.message.reply_to_message.id, callback.message.id])),
             show_alert=True)
     else:
 

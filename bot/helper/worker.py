@@ -1,9 +1,5 @@
-import zipapp
-from _testcapi import awaitType
-from pathlib import Path
-
 from bot.helper.ffmpeg_utils import *
-from pyrogram.types import Message, CallbackQuery, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import Message, CallbackQuery,InlineKeyboardButton, InlineKeyboardMarkup
 from bot.helper import *
 import asyncio
 from pyrogram.errors import FloodWait
@@ -18,11 +14,11 @@ async def FProgress(current, total, chatid, mesgid):
     #        "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
     #  if str(msg.text) != str(proc):
     try:
-        await  app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري التنزيل ... \n" + (
+        await app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري التنزيل ... \n" + (
                 "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
     except FloodWait as e:
         print("error download progress")
-        await asyncio.sleep(e.x)
+        await asyncio.sleep(e.value)
 
 
 async def stats(out: str):
@@ -58,7 +54,7 @@ async def UProgress(current: int, total, chatid, mesgid):
                 "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
     except FloodWait as e:
         print("error upload progress")
-        await asyncio.sleep(e.x)
+        await asyncio.sleep(e.value)
 
 
 async def add_queue(msg: []):
@@ -81,8 +77,8 @@ async def enc(ls: []):
 
     video_file = ""
     try:
-        video_file = await file.download(file_name=str(file.chat.id) + "-" + str(file.message_id), progress=FProgress,
-                                         progress_args=(msg.chat.id, msg.message_id))
+        video_file = await file.download(file_name=str(file.chat.id) + "-" + str(file.id), progress=FProgress,
+                                         progress_args=(msg.chat.id, msg.id))
         print(video_file)
         ttl = get_duration(video_file)
         print("ttl  :" + str(ttl))
@@ -98,7 +94,7 @@ async def enc(ls: []):
         output_filepath = basefilepath + '.HEVC' + '.mp4'
         output_filepath = str(output_filepath).replace("downloads", enpa)
         await msg.edit(text="جاري الضغط...", reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="الحالة", callback_data=str(file.chat.id) + "-" + str(file.message_id))]]))
+            [[InlineKeyboardButton(text="الحالة", callback_data=str(file.chat.id) + "-" + str(file.id))]]))
 
         # await msg.reply_text(text="Encoding", reply_markup=InlineKeyboardMarkup(
         #   [[InlineKeyboardButton(text="state", callback_data=output_filepath)]]))
@@ -109,7 +105,7 @@ async def enc(ls: []):
         try:
             message = await app.send_video(msg.chat.id, outfile,
                                            progress=UProgress,
-                                           progress_args=(msg.chat.id, msg.message_id)
+                                           progress_args=(msg.chat.id, msg.id)
                                            , duration=ttl
                                            , width=width_high[0]
                                            , height=width_high[1]
@@ -119,12 +115,12 @@ async def enc(ls: []):
             if group != "":
                 msg_forward = await  message.forward(chat_id=int(group))
                 await msg_forward.reply(text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}"
-                                            ,
+                                        ,
                                         quote=True
                                         )
         except FloodWait as e:
             print("send error")
-            await asyncio.sleep(e.x)
+            await asyncio.sleep(e.value)
             try:
                 message = await app.send_video(msg.chat.id, outfile
                                                # , progress=UProgress
@@ -137,21 +133,21 @@ async def enc(ls: []):
                 if group != "":
                     msg_forward = await  message.forward(chat_id=int(group))
                     await msg_forward.reply(text=f"قبل: {before} \n بعد: {after}\n{msg.chat.id}\n{msg.chat.first_name}"
-                                                 ,
+                                            ,
                                             quote=True
                                             )
             except FloodWait as ex:
                 print("error send no progress")
-                await asyncio.sleep(ex.x)
+                await asyncio.sleep(ex.value)
 
         try:
             await msg.edit(text=f"قبل: {before} \n بعد: {after}")
         except FloodWait as e:
-            await asyncio.sleep(e.x)
+            await asyncio.sleep(e.value)
             try:
                 await msg.reply_text(text=f"قبل: {before} \n بعد: {after}")
             except FloodWait as e:
-                await asyncio.sleep(e.x)
+                await asyncio.sleep(e.value)
                 print("error reply done")
             print("error edit done")
         os.remove(video_file)
