@@ -1,4 +1,4 @@
 [[build.buildpacks]] 
 uri = "heroku/python" 
 [[build.buildpacks]] 
-uri = "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+uri = "git://github.com/integricho/heroku-buildpack-python-ffmpeg.git"
