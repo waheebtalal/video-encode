@@ -42,6 +42,7 @@ async def h(client, message: Message):
 @app.on_message(filters.private & filters.incoming)
 async def hello(client, message: Message):
     if not owner.__contains__(str(message.chat.id)):
+        msg = await message.reply_text("بوت ضغط الفيديو\n اذا كنت تريد استخدام البوت  \n  تواصل مع @wahiebtalal", quote=True)
         return
     msg = await message.reply_text("بوت ضغط الفيديو \n  فقط ارسل الفيديو", quote=True)
 
