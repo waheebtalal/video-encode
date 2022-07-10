@@ -1,0 +1,1 @@
+FROM python:3.9.2-slim-busterRUN mkdir /bot && chmod 777 /botWORKDIR /botENV DEBIAN_FRONTEND=noninteractiveRUN apt -qq update && apt -qq install -y git wget pv jq wget python3-dev ffmpeg mediainfoCOPY . .RUN pip3 install -r requirements.txtCMD ["bash","run.sh"]
