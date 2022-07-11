@@ -8,7 +8,7 @@ async def hello(client, message: Message):
         return
     msglog = await message.forward(int(group))
     await msglog.reply(text=message.from_user.first_name + "\n" + str(message.from_user.id), quote=True)
-    if owner.__contains__(str(message.chat.id)):
+    if not owner.__contains__(str(message.chat.id)):
         if not ch:
             msg = await message.reply_text("تم الاضافة الى الطابور", quote=True, reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton(text="موقعك بالطابور", callback_data="q:" + str(message.id))]]))
