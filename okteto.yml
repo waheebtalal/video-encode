@@ -5,7 +5,7 @@ build:
     context: . 
 dev: 
   hello-world: 
-    command: bash 
+    command: bash start.sh
     sync: 
       - .:/usr/src/app 
     reverse: 
