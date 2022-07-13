@@ -7,4 +7,4 @@ build:
    target: dev 
   deploy:
   - name: wahieb talal
-    command: python3 main.py
+    command: bash
