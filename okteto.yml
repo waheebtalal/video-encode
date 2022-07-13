@@ -1,4 +1,4 @@
-name: Tg-compress
+name: wahieb
 build: 
   tg:
     context: . 
