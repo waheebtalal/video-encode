@@ -14,4 +14,4 @@ dev:
       - /root/.cache/pip
 
 deploy:
-  - helm upgrade --install movies chart  
+  - okteto build
