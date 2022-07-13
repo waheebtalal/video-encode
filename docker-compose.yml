@@ -5,6 +5,6 @@ services:
     image: okteto/python:3 
     build: 
       context: . 
-      dockerfile: python/Dockerfile 
+      dockerfile: Dockerfile 
       args: 
         VERSION: 3
