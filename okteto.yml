@@ -6,4 +6,4 @@ dev:
   tg:
     command: bash run.sh
 deploy:
-  - okteto build
+  - okteto up
