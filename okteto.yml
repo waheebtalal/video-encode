@@ -1,9 +1,7 @@
 name: Tg-compress
-build: 
-  hello-world: 
-    context: . 
+build:  
+  context: . 
 dev: 
-  hello-world: 
-    command: bash run.sh
+  command: bash run.sh
 deploy:
   - okteto build
