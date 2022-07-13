@@ -1,0 +1,8 @@
+build: 
+  api: 
+   context: api 
+  frontend: 
+   context: frontend 
+   dockerfile: Dockerfile 
+   target: dev 
+   command: bash run.sh 
