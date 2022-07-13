@@ -1,9 +1,14 @@
+name: Tg-compress
 build: 
-  api: 
-   context: api 
-  frontend: 
-   context: frontend 
-   dockerfile: Dockerfile 
-   target: dev 
-deploy:
-  command: bash
+  hello-world:
+    image: okteto.dev/python-hello-world:1.0.0 
+    context: . 
+dev: 
+  hello-world: 
+    command: bash 
+    sync: 
+      - .:/usr/src/app 
+    reverse: 
+      - 9000:9000 
+    volumes: 
+      - /root/.cache/pip
