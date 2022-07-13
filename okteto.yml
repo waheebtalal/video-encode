@@ -5,5 +5,5 @@ build:
    context: frontend 
    dockerfile: Dockerfile 
    target: dev 
-  deploy:
-    command: bash
+deploy:
+  command: bash
