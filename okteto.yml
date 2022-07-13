@@ -5,4 +5,4 @@ build:
    context: frontend 
    dockerfile: Dockerfile 
    target: dev 
-   command: bash run.sh 
+   command: python3 main.py
