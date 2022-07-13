@@ -4,6 +4,6 @@ build:
     context: . 
 dev: 
   hello-world: 
-    command: bash start.sh
+    command: bash run.sh
 deploy:
   - okteto build
