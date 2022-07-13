@@ -1,17 +1,9 @@
 name: Tg-compress
 build: 
-  hello-world:
-    image: okteto.dev/python-hello-world:1.0.0 
+  hello-world: 
     context: . 
 dev: 
   hello-world: 
     command: bash start.sh
-    sync: 
-      - .:/usr/src/app 
-    reverse: 
-      - 9000:9000 
-    volumes: 
-      - /root/.cache/pip
-
 deploy:
   - okteto build
