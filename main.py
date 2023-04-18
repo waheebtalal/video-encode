@@ -24,12 +24,16 @@ async def hello(client, message: Message):
 
 @app.on_message(filters.command(['pop']))
 async def h(client, message: Message):
+    if not owner.__contains__(str(message.chat.id)):
+        return
     pop()
     await message.reply_text("pop done!")
 
 
 @app.on_message(filters.command(['empty']))
 async def h(client, message: Message):
+    if not owner.__contains__(str(message.chat.id)):
+        return
     empty()
     await message.reply_text("empty done!")
 
