@@ -7,7 +7,7 @@ hash = "af0b19d19293e57b1b74cabcf6dcbbd6"
 bot = "5029205621:AAGWw2fkjLpLOT1m2nXVNB-rPoEgJe0Q8T0"
 owner = str("675889933 406793949 506779415").split()
 group = "-1644715256"
-block = "1 2"
+block = "1 2 3"
 try:
     api = config("api", cast=int)
     hash = config("hash")
