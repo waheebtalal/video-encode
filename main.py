@@ -29,6 +29,12 @@ async def h(client, message: Message):
     pop()
     await message.reply_text("pop done!")
 
+@app.on_message(filters.command(['kill']))
+async def h(client, message: Message):
+    if not owner.__contains__(str(message.chat.id)):
+        return
+    os.system("kill $(pidof /usr/bin/ffmpeg)")
+    await message.reply_text("Kill done!")
 
 @app.on_message(filters.command(['empty']))
 async def h(client, message: Message):
