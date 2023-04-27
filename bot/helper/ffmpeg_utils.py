@@ -38,12 +38,23 @@ async def encode(filepath, output_filepath):
         return output_filepath
     print(filepath)
     # Get the video channel codec
+        # Get the video channel codec
     video_codec = get_codec(filepath, channel='v:0')
     if video_codec == []:
         print('Skipping: no video codec reported')
         return None
-    video_opts = '-preset ultrafast -c:v libx265 -crf 27 -map 0:v'
-
+    # Video transcode options
+    if video_codec[0] == 'hevc':
+        if video_codec[1] == 'hvc1':
+            print('Skipping: already h265 / hvc1')
+            return None
+        else:
+            # Copy stream to hvc1
+            video_opts = '-c:v copy -tag:v hvc1'
+    else:
+        # Transcode to h265 / hvc1
+        video_opts = '-c:v libx265 -crf 28 -tag:v hvc1 -preset fast -threads 8'
+    # Get the audio channel codec
     audio_codec = get_codec(filepath, channel='a:0')
     if audio_codec == []:
         audio_opts = ''
