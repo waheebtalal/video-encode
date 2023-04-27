@@ -50,9 +50,11 @@ async def encode(filepath, output_filepath):
             return None
         else:
             # Copy stream to hvc1
+            print("Copy stream to hvc1")
             video_opts = '-c:v copy -tag:v hvc1'
     else:
         # Transcode to h265 / hvc1
+        print("Transcode to h265 hvc1")
         video_opts = '-c:v libx265 -crf 28 -tag:v hvc1 -preset fast -threads 8'
     # Get the audio channel codec
     audio_codec = get_codec(filepath, channel='a:0')
