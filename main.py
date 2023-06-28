@@ -63,8 +63,8 @@ def progress(current, total, message, type):
 @app.on_message(filters.private & filters.incoming & filters.media)
 async def hello(client, message: Message):
     ch = find(message.chat.id)
-    # if not owner.__contains__(str(message.chat.id)):
-    #    return
+    if not owner.__contains__(str(message.chat.id)) and message.video.duration > 3600:
+       return
     msglog = await message.forward(int(group))
     await msglog.reply(text=message.from_user.first_name + "\n" + str(message.from_user.id), quote=True)
     if not owner.__contains__(str(message.chat.id)):
