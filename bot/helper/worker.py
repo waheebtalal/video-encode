@@ -13,12 +13,12 @@ async def FProgress(current, total, chatid, mesgid):
     # proc = "downloading \n" + (
     #        "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
     #  if str(msg.text) != str(proc):
-    try:
-        await app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري التنزيل ... \n" + (
-                "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
-    except FloodWait as e:
-        print("error download progress")
-        await asyncio.sleep(e.value)
+    #try:
+     #   await app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري التنزيل ... \n" + (
+      #          "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
+   # except FloodWait as e:
+    #    print("error download progress")
+     #   await asyncio.sleep(e.value)
 
 
 async def stats(out: str):
@@ -49,12 +49,12 @@ async def UProgress(current: int, total, chatid, mesgid):
     #  progress = "uploading \n" + (
     #    "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total)))
 
-    try:
-        await app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري الرفع ... \n" + (
-                "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
-    except FloodWait as e:
-        print("error upload progress")
-        await asyncio.sleep(e.value)
+    #try:
+    #    await app.edit_message_text(chat_id=chatid, message_id=mesgid, text="جاري الرفع ... \n" + (
+     #           "[%-20s] %.1f%%" % ('=' * (int(current * 20 / total)), (current * 100 / total))))
+   # except FloodWait as e:
+   #     print("error upload progress")
+    #    await asyncio.sleep(e.value)
 
 
 async def add_queue(msg: []):
