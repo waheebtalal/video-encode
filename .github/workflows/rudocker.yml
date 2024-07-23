@@ -22,4 +22,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run:  docker run heebow/vv2 # build  --file Dockerfile -t foo . && docker run -it foo && docker rmi foo
+      run:  docker run heebow/videoencd # build  --file Dockerfile -t foo . && docker run -it foo && docker rmi foo
